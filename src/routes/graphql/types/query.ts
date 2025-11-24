@@ -6,7 +6,7 @@ import {
 import { UserType } from "./user.js";
 import { ProfileType } from "./profile.js";
 import { PostType } from "./post.js";
-import { MemberTypeType } from "./memberType.js";
+import { MemberTypeIdEnum, MemberTypeType } from "./memberType.js";
 import { GraphQLContext } from "./context.js";
 import { UUIDType } from "./uuid.js";
 
@@ -85,9 +85,9 @@ export const RootQueryType = new GraphQLObjectType({
     },
 
     memberType: {
-      type: (MemberTypeType as unknown as GraphQLObjectType),
-      args: { id: { type: new GraphQLNonNull(UUIDType) } },
-      resolve: async (_parent, args: IdArg, context: GraphQLContext) => {
+      type: MemberTypeType,
+      args: { id: { type: new GraphQLNonNull(MemberTypeIdEnum) } },
+      resolve: async (_parent, args: { id: string }, context: GraphQLContext) => {
         return context.prisma.memberType.findUnique({ where: { id: args.id } });
       },
     },
